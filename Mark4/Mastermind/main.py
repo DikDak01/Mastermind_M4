@@ -1,5 +1,5 @@
-from Rules import web_backend
-from Evaluation import evaluation
+from Mark4.Rules import web_backend
+from Mark4.Evaluation import evaluation
 
 from colorama import *
 import random
@@ -27,8 +27,6 @@ class Mastermind:
 
 class Gamelogic():
 
-
-    
     def add_player(self, player, computer):
         self.players.append(player, computer)
 

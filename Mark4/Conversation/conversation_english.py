@@ -1,127 +1,106 @@
+from pymongo import MongoClient
 
-from colorama import *
-import emoji as em
+client = MongoClient('localhost', 27017)
 
+db = client.Mastermind
 
-#^ All questions of the entire game are in these classes
+collection = db.conversation_english
 
-class Conversion_Init:
-    
-    def __init__(self) -> None:
-        self.opponent = 0
-        self.player1_name = ''
-        self.player2_name = ''
-        self.codemaker_choice = 0
+conversations_english = [
 
-        self.gamestart_choice = 0
-        self.kidding_choice = 0
+        {
+            #\n1. German\n2. English\n3. Shut up!
+            "language": "In which language you wanna play:"
+        },
 
-        self.omround_choice = 0
-        self.settings_choice = 0
-        self.slanguage_choice = 0
+        {
+            #\n1. Computer\n2. Friend\n3. with myself
+            "opponent": "Do you want to compete against a computer or friend:"
+        },
 
-                 
+        {
+            "player1": "Player 1, what do you want to be called in the game?"
+        },
 
-class Start_Questions_English(Conversion_Init):
+        {
+            "player2": "Player 2 now it's your turn"
+        },
 
-    def opponent_q_engl(self):
-        print("Do you want to compete against a computer or friend:\n1. Computer\n2. Friend\n3. with myself")
-        self.opponent = int(input("Enter the number corresponding to your preferred opponent:"))
-        
-    def player1_q_engl(self):
-        print("Player 1, what do you want to be called in the game?")
-        self.player1_name = input("Enter the name corresponding to your preferred playername:")
-        
-    def player2_q_engl(self):
-        print("Player 2 now it's your turn")
-        self.player2_name = input("Enter the name corresponding to your preferred playername:")
-        
-    def codemaker_q_engl(self):
-        print(f"Who wants to be the codemaker?\n1. {self.player1_name}\n2. {self.player2_name}")
-        self.codemaker_choice = int(input("Enter the number corresponding to your preferred opponent:"))
+        {
+            "language": "Very good, so you want to play the game in English,\nthen move on to the next question"
+        },
 
+        {
+            "opponent_computer": "You play against the computer 🤖..."
+        },
 
-class Start_Answers_English(Start_Questions_English):
+        {
+            "opponent_friend": "Nice, so you want to play against a friend 👨‍🦳..."
+        },
 
-    def computer_a_engl(self):
-        print(em.emojize("You play against the computer 🤖..."))
+        {
+            "narcissism": "I think this page might interest you:"
+        },
 
-    def friend_a_engl(self):
-        print(em.emojize("Nice, so you want to play against a friend 👨‍🦳..."))
+        {
+            "codemaker": "Okey, is the {self.opponent} Codemaker!"
+        },
 
-    def narcissism_a_engl(self):
-        print("I think this page might interest you:")
+        {
+            #\n1. Yes\n2. No
+            "gamestart": "Would you like to start the game:"
+        },
 
-    # Player vs. Computer
-    def codemaker_a_engl(self):
-        print(f"Okey, {self.opponent} Codemaker!")
+        {
+            #\nwhy not?
+            "kidding": "are you kidding me 🤬"
+        },
 
-    # Player vs. Player
-    # TODO: Vl. könnte man das nur in einer Funktion lösen
-    def player1cm_a_engl(self):
-        print(f"Okey, {self.player1_name} is the Codemaker!")
+        {
+            "computercm": "The secret code has been generated,\nhave fun cracking the code 😄"
+        },
 
-    def player2cm_a_engl(self):
-        print(f"Okey, {self.player2_name} is the Codemaker!")
+        {
+            "waiting": "I'm waiting"
+        },
 
+        {
+            #\n1. Yes\n2. No
+            "omr": "Don't you have enough yet? Do you want to play another round:"
+        },
 
-class Intermediate_Questions_English(Start_Answers_English):
+        {
+            #\n 1. Yes\n2. No
+            "set_change": "Do you want to change your settings:"
+        },
 
-    def gamestart_q_engl(self):
-        # TODO: Du/Ihr mit Formatstrings einfügen?
-        print("Would you like to start the game:\n1. Yes\n2. No")
-        self.gamestart_choice = int(input("Enter the number that corresponds to your preferred choice:"))
+        {
+            #\n 1. Yes\n2. No
+            "s_language": "Do you want to continue communicating in the same language:"
+        },
 
-    def kidding_q_engl(self):
-        print(em.emojize("are you kidding me 🤬?"))
-        self.kidding_choice = input("why not?")
+        {
+            "wincm": "Haha, apparently your code was too good to be cracked!\nHere's your reward:"
+        },
 
+        {
+            "wincb": "Hehe, Mr. Codebreaker has struck again, congratulations!\nHere is your reward:"
+        },
 
-class Intermediate_Answers_English(Intermediate_Questions_English):
+        {
+            "next_time": "Too bad, see you next time!"
+        },
 
-    def comuptercm_a_engl(self):
-        print(em.emojize("The secret code has been generated,\nhave fun cracking the code 😄"))
+        {
+            "no_change": "Okay, then let's get started!"
+        },
 
-    def waiting_a_engl(self):
-        # TODO: Waiting Animation hinzufügen
-        print("I'm waiting...")
+        {
+            "change_set": "Okay, then let's change the other settings!"
+        },
 
-
-class Final_Questions_English(Intermediate_Answers_English):
-
-    # TODO: omround = one more round, vl. fällt mir noch ein besserer Name ein
-    def omround_q_engl(self):
-        print("Don't you have enough yet? Do you want to play another round:\n1. Yes\n2. No")
-        self.omround_choice = int(input("Enter the number that corresponds to your preferred choice:"))
-
-    def settings_q_engl(self):
-        print("Do you want to change your settings:\n 1. Yes\n2. No")
-        self.settings_choice = int(input("Enter the number that corresponds to your preferred choice:"))
-
-    # slanguage = same language, vl. fällt mir noch ein besserer Name ein
-    def slanguage_q_engl(self):
-        print("Do you want to continue communicating in the same language:\n 1. Yes\n2. No")
-        self.slanguage_choice = int(input("Enter the number that corresponds to your preferred choice:"))
-
-
-class Final_Answers_English(Final_Questions_English):
-
-    def wincm_a_engl(self):
-        print("Haha, apparently your code was too good to be cracked!\nHere's your reward:")
-
-    def wincb_a_engl(self):
-        print("Hehe, Mr. Codebreaker has struck again, congratulations!\nHere is your reward:")
-
-    def nextime_a_engl(self):
-        print("Too bad, see you next time!")
-
-    def no_change_a_engl(self):
-        print("Okay, then let's get started!")
-
-
-    def change_set_a_engl(self):
-       print("Okay, then let's change the other settings!")
-
-
-    def change_set_a_ger(self):
-        print("Gut, dann lass uns mit den anderen Einstellungen fortfahren!")
+        {
+            "change_set_ger": "Gut, dann lass uns mit den anderen Einstellungen fortfahren!"
+        }
+]
+collection.insert_many(conversations_english)
